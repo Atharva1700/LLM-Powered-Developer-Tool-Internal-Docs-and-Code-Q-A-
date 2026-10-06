@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Docs Q&A Tool</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; }
+    .container { max-width: 600px; margin: 0 auto; }
+    input { width: 100%; padding: 8px; }
+    button { padding: 8px 16px; margin-top: 8px; }
+    .result { margin-top: 16px; padding: 12px; background: #f0f0f0; border-radius: 4px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Documentation Q&A</h1>
+    <input type="text" id="question" placeholder="Ask about the codebase...">
+    <button onclick="askQuestion()">Ask</button>
+    <div id="result"></div>
+  </div>
+  <script>
+    async function askQuestion() {
+      const q = document.getElementById('question').value;
+      const res = await fetch(`/ask?question=${encodeURIComponent(q)}`, { method: 'POST' });
+      const data = await res.json();
+      document.getElementById('result').innerHTML = `
+        <h3>Answer</h3>
+        <p>${data.answer}</p>
+        <p><small>Source: ${data.source}</small></p>
+      `;
+    }
+  </script>
+</body>
+</html>
